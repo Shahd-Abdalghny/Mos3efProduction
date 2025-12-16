@@ -43,6 +43,7 @@ export const SearchSection = () => {
   };
 
   const handleCategorySearch = (cat) => {
+    console.log("Category clicked:", cat); // Debug log
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const lat = pos.coords.latitude;
@@ -68,10 +69,14 @@ export const SearchSection = () => {
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleKeywordSearch()}
           />
-          <SearchIcon
+          <button
+            type="button"
             onClick={handleKeywordSearch}
-            className="w-5 h-5 md:w-6 md:h-6 text-Blue cursor-pointer"
-          />
+            className="cursor-pointer focus:outline-none"
+            aria-label="بحث"
+          >
+            <SearchIcon className="w-5 h-5 md:w-6 md:h-6 text-Blue" />
+          </button>
         </div>
       </div>
 
@@ -81,6 +86,7 @@ export const SearchSection = () => {
         <Button
           onClick={() => setShowMap(!showMap)}
           className="inline-flex items-center justify-center w-full md:w-[84px] h-[53px] gap-1 px-6 py-2 bg-Blue rounded-3xl shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue/90 transition-colors order-1 md:order-2"
+          type="button"
         >
           <Map className="w-5 h-5 md:w-6 md:h-6" />
           <span className="font-Cairo text-white text-sm md:hidden">
@@ -91,15 +97,17 @@ export const SearchSection = () => {
         {/* Filter Tags Container */}
         <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full order-2 md:order-1">
           {filterTags.map((tag) => (
-            <Badge
+            <button
               key={tag.value}
               onClick={() => handleCategorySearch(tag.category)}
-              className="inline-flex items-center justify-center gap-1 px-3 md:px-6 lg:px-8 py-2 h-auto bg-Blue-200 rounded-3xl overflow-hidden shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue-200/90 transition-colors cursor-pointer flex-shrink-0"
+              className="inline-flex items-center justify-center gap-1 px-3 md:px-6 lg:px-8 py-2 h-auto bg-Blue-200 rounded-3xl overflow-hidden shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue-200/90 active:bg-Blue-300 transition-colors cursor-pointer flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-Blue-900/50"
+              type="button"
+              aria-label={`بحث عن ${tag.label}`}
             >
               <div className="font-Cairo text-Blue-900 text-xs md:text-base lg:text-xl [direction:rtl] whitespace-nowrap">
                 {tag.label}
               </div>
-            </Badge>
+            </button>
           ))}
         </div>
       </div>

@@ -9,6 +9,46 @@
 body{
   font-family: "Cairo",sans-serif;
 }
+button {
+  transition: all 0.15s ease;
+  overflow: hidden;
+}
+button:active {
+  transform: scale(0.96);
+}
+@media (hover: hover) {
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+@media (max-width: 768px) {
+  button:active {
+    transform: scale(0.94);
+    opacity: 0.9;
+  }
+}
+
+button:focus:not(:active)::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+
+  20% {
+    transform: scale(25, 25);
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(40, 40);
+  }
+}
 @theme inline {
   --color-Blue: #165A80;
   --color-Blue-900: #071E2C;
