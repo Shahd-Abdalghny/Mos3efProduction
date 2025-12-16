@@ -1,0 +1,26 @@
+import React from 'react'
+import { HeartButton } from './HeartButton'
+import { Online } from './Online'
+import { RatingOfServices } from './RatingOfServices'
+
+export const HeaderOfService = ({ image, name, rating, isOnline }) => {
+    return (
+        <header className="relative w-full h-[147px] rounded-2xl overflow-hidden shadow-[0px_4px_4px_#7cc1e9]">
+            
+            <img
+                src={image}
+                alt={name}
+                className="w-full h-full object-cover" />
+            <div className="absolute top-[35px] left-0 w-full h-28 bg-[linear-gradient(180deg,rgba(217,217,217,0)_0%,rgba(168,214,240,1)_100%)]" />
+            <div className="flex flex-col w-full items-end absolute top-[97px] -left-2">
+                <RatingOfServices rating={rating} />
+                <h2 className="self-stretch font-bold [direction:rtl] font-Cairo text-Blue-900 text-sm tracking-[0] leading-[normal]">
+                    {name}
+                </h2>
+            </div>
+            <HeartButton />
+            <Online isOnline={isOnline} />
+        </header>
+
+    )
+}
