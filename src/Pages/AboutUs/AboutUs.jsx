@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import { Card } from "@/Components/UI/Card";
+import { Card } from "../../components/ui/card";
 import { Heart, MapPin, Shield, Target, Zap } from "lucide-react";
 import { Clock } from "lucide-react";
 
