@@ -1,5 +1,4 @@
 /** @format */
-
 import React, { useEffect } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -9,20 +8,23 @@ import { useSearch } from "../hooks/useSearch.js";
 import { useState } from "react";
 import { HospitalCard } from "./HospitalCard.jsx";
 import MapComponent from "./Map.jsx";
+
 const filterTags = [
   { label: "طوارئ 24/7", value: "emergency", category: "EmergencyRoom" },
   { label: "عناية مركزه", value: "icu", category: "ICU" },
   { label: "حضانة أطفال", value: "nursery", category: "NICU" },
   { label: "بنك دم", value: "blood-bank", category: "BloodBank" },
 ];
+
 export const SearchSection = () => {
   const { results, searchByCategory, searchByKeyword, clearResults } =
     useSearch();
   const [keyword, setKeyword] = useState("");
   const [showMap, setShowMap] = useState(false);
-useEffect(() => {
-  clearResults();
-}, []);
+
+  useEffect(() => {
+    clearResults();
+  }, []);
 
   const handleKeywordSearch = () => {
     if (!keyword.trim()) return;
@@ -39,6 +41,7 @@ useEffect(() => {
       }
     );
   };
+
   const handleCategorySearch = (cat) => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -54,65 +57,78 @@ useEffect(() => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center  gap-5  max-w-[848px]">
+    <div className="w-full flex flex-col items-center justify-center gap-5 max-w-[848px] px-4 md:px-0">
+      {/* Search Input */}
       <div className="flex items-center gap-2 md:gap-4 w-full">
-        {/* Search Input */}
-        <div className="flex items-center justify-end gap-2 px-4  md:px-8 py-2 md:py-3 flex-1 rounded-3xl border border-solid border-Blue-900/40 ">
+        <div className="flex items-center justify-end gap-2 px-4 md:px-8 py-2 md:py-3 flex-1 rounded-3xl border border-solid border-Blue-900/40">
           <Input
-            className="font-Cairo text-Blue-900 text-base  md:text-xl [direction:rtl] w-full border-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto  placeholder:text-gray-400"
-            placeholder=" بحث"
+            className="font-Cairo text-Blue-900 text-base md:text-xl [direction:rtl] w-full border-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto placeholder:text-gray-400"
+            placeholder="بحث"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleKeywordSearch()}
           />
           <SearchIcon
             onClick={handleKeywordSearch}
-            className="w-5 h-5 md:w-6 md:h-6 text-Blue"
+            className="w-5 h-5 md:w-6 md:h-6 text-Blue cursor-pointer"
           />
         </div>
       </div>
 
-      {/* Filter */}
       {/* Filter Tags */}
-      <div className="flex   gap-2 md:gap-3 w-full [direction:rtl]">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-3 w-full [direction:rtl]">
+        {/* Map Button - فوق الفلاتر في الموبايل */}
         <Button
           onClick={() => setShowMap(!showMap)}
-          className="inline-flex items-center justify-center md:w-[84px] md:h-[53px]  gap-1 px-6 lg:px-8 py-2  bg-Blue rounded-3xl shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue/90 transition-colors"
+          className="inline-flex items-center justify-center w-full md:w-[84px] h-[53px] gap-1 px-6 py-2 bg-Blue rounded-3xl shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue/90 transition-colors order-1 md:order-2"
         >
           <Map className="w-5 h-5 md:w-6 md:h-6" />
+          <span className="font-Cairo text-white text-sm md:hidden">
+            الخريطة
+          </span>
         </Button>
-        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full [direction:rtl]">
+
+        {/* Filter Tags Container */}
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full order-2 md:order-1">
           {filterTags.map((tag) => (
             <Badge
               key={tag.value}
               onClick={() => handleCategorySearch(tag.category)}
-              className="inline-flex items-center justify-center gap-1 px-4 md:px-6 lg:px-8 py-2 h-auto bg-Blue-200 rounded-3xl overflow-hidden shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue-200/90 transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center gap-1 px-3 md:px-6 lg:px-8 py-2 h-auto bg-Blue-200 rounded-3xl overflow-hidden shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue-200/90 transition-colors cursor-pointer flex-shrink-0"
             >
-              <div className="font-Cairo text-Blue-900 text-sm md:text-base lg:text-xl [direction:rtl] whitespace-nowrap">
+              <div className="font-Cairo text-Blue-900 text-xs md:text-base lg:text-xl [direction:rtl] whitespace-nowrap">
                 {tag.label}
               </div>
             </Badge>
           ))}
         </div>
       </div>
-      
-        {results.length > 0 && (
-          <div className="w-full">
-            {!showMap && (
-              <div className="mt-6 mb-4 w-full justify-center py-6 border border-Blue-900 rounded-2xl bg-Blue-200 flex items-center gap-2 flex-wrap">
+
+      {/* Results Section */}
+      {results.length > 0 && (
+        <div className="w-full">
+          {!showMap && (
+            <div className="mt-6 mb-4 w-full px-2 md:px-0">
+              <div className="py-4 md:py-6 border border-Blue-900 rounded-2xl bg-Blue-200 flex flex-col md:flex-row md:flex-wrap items-center gap-4 md:gap-6 justify-center overflow-x-auto md:overflow-visible">
                 {results.map((item, index) => (
-                  <HospitalCard key={index} item={item} />
+                  <div
+                    key={index}
+                    className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)] min-w-[280px] max-w-[400px]"
+                  >
+                    <HospitalCard item={item} />
+                  </div>
                 ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {showMap && (
-              <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] mb-10 rounded-lg overflow-hidden border border-Blue-900">
-                <MapComponent results={results} />
-              </div>
-            )}
-          </div>
-        )}
-
+          {showMap && (
+            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] mb-10 rounded-lg overflow-hidden border border-Blue-900 mt-4">
+              <MapComponent results={results} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

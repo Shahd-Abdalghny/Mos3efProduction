@@ -122,13 +122,13 @@ export const NavBar = () => {
             <ul className="flex flex-col items-center gap-4 mt-5 px-5 text-lg font-medium">
               {navItems.map((item, index) => (
                 <li key={index}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="px-4 py-2 rounded-full inline-block text-Blue-50 font-Cairo  [direction:rtl]"
                     onClick={() => setShowMobileMenue(false)}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
