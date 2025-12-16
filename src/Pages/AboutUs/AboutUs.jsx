@@ -1,10 +1,6 @@
-/** @format */
-
 import React from "react";
+import { Heart, MapPin, Shield, Target, Zap, Clock } from "lucide-react";
 import { Card } from "../../components/ui/card";
-import { Heart, MapPin, Shield, Target, Zap } from "lucide-react";
-import { Clock } from "lucide-react";
-
 export const AboutUs = () => {
   return (
     <div className="pt-24 w-full">
