@@ -277,7 +277,10 @@ export const ServiceCard = () => {
                 <div className="flex flex-col w-full sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[463px] items-end gap-2 md:gap-4">
                   <Card
                     className={`inline-flex items-center justify-center gap-2 md:gap-3 p-2 md:p-3 rounded-[18px] md:rounded-[22px] border-0 shadow-none w-full ${
-                      service.availability === "YES"
+                      service.availability === "YES"||
+                        service.availability === "متاح"||
+                      service.availability === "متاحة"||
+                      service.availability === true
                         ? "bg-green-100"
                         : "bg-red-100"
                     }`}
@@ -285,12 +288,19 @@ export const ServiceCard = () => {
                     <CardContent className="p-0 flex items-center w-full justify-center gap-2 md:gap-3">
                       <div
                         className={`w-fit font-Cairo font-semibold text-sm md:text-[15px] tracking-[0] leading-[normal] [direction:rtl] ${
-                          service.availability === "YES"
+                          service.availability === "YES"||
+                        service.availability === "متاح"||
+                      service.availability === "متاحة"||
+                      service.availability === true
                             ? "text-green-800"
                             : "text-red-800"
                         }`}
                       >
-                        {service.availability === "YES" ? "متاحة" : "غير متاحة"}
+                        {service.availability === "YES" ||
+                        service.availability === "متاح"||
+                      service.availability === true ||
+                      service.availability === "متاحة"
+                        ? "متاحة" : "غير متاحة"}
                       </div>
                     </CardContent>
                   </Card>
