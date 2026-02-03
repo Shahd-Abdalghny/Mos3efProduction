@@ -10,7 +10,7 @@ import {
   ScaleIcon,
   Share2Icon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState  } from "react";
 import { useParams } from "react-router-dom";
 import {
   Carousel,
@@ -20,6 +20,7 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import React from "react";
+import { ServicesContext } from "../Context/ServicesContext";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Textarea } from "./ui/textarea";
@@ -29,17 +30,6 @@ import { HeartButton } from "./HeartButton";
 import { Online } from "./Online";
 import { ReviewCard } from "./ReviewCard";
 import { useHospital } from "../hooks/useHospital.js";
-
-const photoGallery = [
-  {
-    src: "https://c.animaapp.com/mi7g3z3l51WlVC/img/photo2.png",
-    alt: "Photo 2",
-  },
-  {
-    src: "https://c.animaapp.com/mi7g3z3l51WlVC/img/photo3.png",
-    alt: "Photo 3",
-  },
-];
 
 const detailsSections = [
   {
@@ -61,7 +51,6 @@ const stars = Array(5).fill(
 export const ServiceCard = () => {
   const { id } = useParams();
   const { getServiceById } = useHospital();
-
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -87,6 +76,7 @@ export const ServiceCard = () => {
 
     if (id) {
       fetchService();
+      
     }
   }, [id, getServiceById]);
 
@@ -128,6 +118,7 @@ export const ServiceCard = () => {
         <Card className="flex flex-col w-full p-0 items-center gap-3 md:gap-4 shadow-none border-0">
           <CardContent className="w-full p-0">
             <div className="relative w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[428px] rounded-2xl overflow-hidden shadow-[0px_4px_4px_#7cc1e9] bg-cover bg-center">
+              <div class="absolute bottom-0 left-0 w-full h-28 bg-[linear-gradient(180deg,rgba(217,217,217,0)_0%,rgba(168,214,240,1)_100%)]"></div>
               <img
                 src={
                   service.hospitalImage
@@ -137,34 +128,9 @@ export const ServiceCard = () => {
                 alt={service.name || "صورة الخدمة"}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute top-[-51px] left-0 w-full h-[479px] bg-[linear-gradient(180deg,rgba(217,217,217,0)_0%,rgba(84,172,225,1)_100%)]" />
-
-              <div className="inline-flex items-center justify-end gap-1 md:gap-2 absolute top-[180px] sm:top-[220px] md:top-[250px] lg:top-[312px] left-[10px] md:left-[15px] lg:left-[25px]">
-                <div className="relative w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] md:w-[80px] md:h-[80px] lg:w-[99.83px] lg:h-[97.83px]">
-                  <img
-                    className="absolute hidden md:inline-block top-0 -left-1 w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] md:w-[80px] md:h-[80px] lg:w-[106px] lg:h-[106px] rounded-xl object-cover"
-                    alt="More"
-                    src="https://c.animaapp.com/mi7g3z3l51WlVC/img/more.png"
-                  />
-                  <div className="absolute hidden md:inline-block top-[12px] sm:top-[15px] md:top-[20px] lg:top-[25px] left-[8px] sm:left-[10px] md:left-[15px] lg:left-[19px] w-[25px] sm:w-[30px] md:w-[40px] lg:w-[46px] font-Cairo font-bold text-[#e9f5fb] text-sm sm:text-base md:text-lg lg:text-2xl text-right tracking-[0] leading-[normal]">
-                    +14
-                  </div>
-                </div>
-
-                {photoGallery.map((photo, index) => (
-                  <img
-                    key={index}
-                    className="relative w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] md:w-[80px] md:h-[80px] lg:w-[105px] lg:h-[106px] hidden md:inline-block rounded-xl object-cover"
-                    alt={photo.alt}
-                    src={photo.src}
-                  />
-                ))}
-              </div>
-
               <Online isOnline={true} />
-              <HeartButton />
-
-              <div className="flex flex-col w-full xs:w-[300px] sm:w-[350px] md:w-[400px] lg:w-[531px] items-end gap-1 absolute top-[80px] xs:top-[100px] sm:top-[120px] md:top-[150px] lg:top-[201px] right-[8px] xs:right-[10px] sm:right-[12px] md:right-[15px] lg:right-[18px]">
+              
+              <div className="flex flex-col w-full  items-end gap-1 absolute top-[80px] xs:top-[100px] sm:top-[120px] md:top-[150px] lg:top-[201px] right-[8px] xs:right-[10px] sm:right-[12px] md:right-[15px] lg:right-[18px]">
                 <div className="inline-flex items-center justify-center gap-1 xs:gap-2 sm:gap-3 md:gap-4 flex-wrap">
                   <div className="w-fit text-[#152211] text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-Cairo font-bold tracking-[0] leading-[normal] [direction:rtl]">
                     {service.name || "اسم الخدمة"}
@@ -177,9 +143,6 @@ export const ServiceCard = () => {
                       <RatingOfServices
                         rating={service.averageRating || "4.5"}
                       />
-                      <div className="w-fit font-Cairo font-normal text-Blue-900 text-xs tracking-[0] leading-[normal] [direction:rtl]">
-                        بناء على 4500 مراجعة
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -187,30 +150,6 @@ export const ServiceCard = () => {
                 <h1 className="self-stretch h-auto font-Cairo font-bold text-Blue-900 text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-[32px] tracking-[0] leading-tight [direction:rtl] mt-1 xs:mt-2">
                   {service.hospitalName || "اسم المستشفى"}
                 </h1>
-
-                <div className="inline-flex items-center justify-center gap-1 xs:gap-2 mt-1 xs:mt-2 flex-wrap">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="px-2 xs:px-3 py-0.5 xs:py-1 h-auto rounded-3xl text-xs"
-                  >
-                    <Share2Icon className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-                  </Button>
-                  <ButtonTextAndIcon
-                    text={"اضف للمقارنة"}
-                    icon={
-                      <ScaleIcon className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-                    }
-                    className="text-xs"
-                  />
-                  <ButtonTextAndIcon
-                    text={"أتصل بالمستشفى"}
-                    icon={
-                      <PhoneIcon className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-                    }
-                    className="text-xs"
-                  />
-                </div>
               </div>
             </div>
 
@@ -227,6 +166,22 @@ export const ServiceCard = () => {
                   </div>
                   <MapPinIcon className="w-4 h-4 xs:w-5 xs:h-5 md:w-6 md:h-6" />
                 </div>
+              </div>
+              <div className="inline-flex items-center justify-center gap-1 xs:gap-2 mt-1 xs:mt-2 flex-wrap">
+                <ButtonTextAndIcon
+                  text={"اضف للمقارنة"}
+                  icon={
+                    <ScaleIcon className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                  }
+                  className="text-xs"
+                />
+                <ButtonTextAndIcon
+                  text={"أتصل بالمستشفى"}
+                  icon={
+                    <PhoneIcon className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                  }
+                  className="text-xs"
+                />
               </div>
             </div>
           </CardContent>
@@ -245,7 +200,7 @@ export const ServiceCard = () => {
                   <Card className="inline-flex items-center justify-center gap-2 md:gap-3 p-2 md:p-3 bg-[#e9f5fb] rounded-[18px] md:rounded-[22px] border-0 shadow-none w-full">
                     <CardContent className="p-0 flex items-center w-full justify-center gap-2 md:gap-3">
                       <div className="w-fit font-Cairo font-semibold text-black text-sm md:text-[15px] tracking-[0] leading-[normal] [direction:rtl]">
-                        {service.price || "0"} $
+                        {service.price || "0"}
                       </div>
                       <div className="w-fit font-Cairo font-bold text-[#294521] text-lg md:text-xl lg:text-2xl xl:text-[28px] tracking-[0] leading-[normal] whitespace-nowrap [direction:rtl]">
                         جنيها
@@ -277,9 +232,9 @@ export const ServiceCard = () => {
                 <div className="flex flex-col w-full sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[463px] items-end gap-2 md:gap-4">
                   <Card
                     className={`inline-flex items-center justify-center gap-2 md:gap-3 p-2 md:p-3 rounded-[18px] md:rounded-[22px] border-0 shadow-none w-full ${
-                      service.availability === "YES"||
-                        service.availability === "متاح"||
-                      service.availability === "متاحة"||
+                      service.availability === "YES" ||
+                      service.availability === "متاح" ||
+                      service.availability === "متاحة" ||
                       service.availability === true
                         ? "bg-green-100"
                         : "bg-red-100"
@@ -288,19 +243,20 @@ export const ServiceCard = () => {
                     <CardContent className="p-0 flex items-center w-full justify-center gap-2 md:gap-3">
                       <div
                         className={`w-fit font-Cairo font-semibold text-sm md:text-[15px] tracking-[0] leading-[normal] [direction:rtl] ${
-                          service.availability === "YES"||
-                        service.availability === "متاح"||
-                      service.availability === "متاحة"||
-                      service.availability === true
+                          service.availability === "YES" ||
+                          service.availability === "متاح" ||
+                          service.availability === "متاحة" ||
+                          service.availability === true
                             ? "text-green-800"
                             : "text-red-800"
                         }`}
                       >
                         {service.availability === "YES" ||
-                        service.availability === "متاح"||
-                      service.availability === true ||
-                      service.availability === "متاحة"
-                        ? "متاحة" : "غير متاحة"}
+                        service.availability === "متاح" ||
+                        service.availability === true ||
+                        service.availability === "متاحة"
+                          ? "متاحة"
+                          : "غير متاحة"}
                       </div>
                     </CardContent>
                   </Card>
@@ -423,3 +379,4 @@ export const ServiceCard = () => {
     </div>
   );
 };
+

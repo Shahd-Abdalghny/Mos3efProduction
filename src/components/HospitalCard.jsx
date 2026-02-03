@@ -16,7 +16,7 @@ export const HospitalCard = ({ item }) => {
   };
   return (
     <Card
-      onClick={handleClick}
+      
       className="inline-flex flex-col items-center justify-center gap-3 md:gap-4 pt-2 pb-3 px-2 bg-white rounded-[20px] shadow-[0_0_2px_0_rgba(0,0,0,0.95)] w-full cursor-pointer hover:shadow-md transition-shadow"
       data-model-id="4:98"
     >
@@ -37,6 +37,7 @@ export const HospitalCard = ({ item }) => {
               ? true
               : false
           }
+          id={item.serviceId}
         />
 
         {/* Badges Section */}
@@ -72,9 +73,10 @@ export const HospitalCard = ({ item }) => {
         {/* Footer Buttons */}
         <footer className="inline-flex items-center justify-between md:justify-center gap-1 md:gap-2 w-full px-1 md:px-0">
           <ButtonTextAndIcon
-            text={"اضف للمقارنة"}
+            text={"تفاصيل"}
             icon={<ChartLine className="w-4 h-4 md:w-5 md:h-5" />}
             className="text-xs md:text-sm"
+            onClick={handleClick}
           />
           <IconButton
             IconName={<PhoneOutgoing className="w-4 h-4 md:w-5 md:h-5" />}

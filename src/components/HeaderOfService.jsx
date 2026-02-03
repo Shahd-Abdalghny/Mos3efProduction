@@ -3,7 +3,7 @@ import { HeartButton } from './HeartButton'
 import { Online } from './Online'
 import { RatingOfServices } from './RatingOfServices'
 
-export const HeaderOfService = ({ image, name, rating, isOnline }) => {
+export const HeaderOfService = ({ image, name, rating, isOnline , id }) => {
     return (
         <header className="relative w-full h-[147px] rounded-2xl overflow-hidden shadow-[0px_4px_4px_#7cc1e9]">
             
@@ -18,7 +18,7 @@ export const HeaderOfService = ({ image, name, rating, isOnline }) => {
                     {name}
                 </h2>
             </div>
-            <HeartButton />
+            <HeartButton serviceId={id} />
             <Online isOnline={isOnline} />
         </header>
 

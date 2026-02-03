@@ -7,8 +7,8 @@ import { SignUp } from "./Pages/Auth/SighnUp";
 import { LogIn } from "./Pages/Auth/LogIn";
 import { PatientProfile } from "./Pages/Patient/PatientProfile";
 import { EditProfile } from "./components/EditProfile";
-import { SavedServices } from "./components/SavedServices";
-import MyReviews from "./components/MyReviews";
+import  SavedServices  from "./Pages/Patient/SavedServices";
+import MyReviews from "./Pages/Patient/MyReviews";
 import { SideBarMobile } from "./components/SideBarMobile";
 import { SignUpHospital } from "./Pages/Auth/SignUpHospital";
 import { DashBoard } from "./Pages/Hospital/DashBoard";
@@ -80,7 +80,7 @@ function App() {
           }
         >
           <Route index element={<EditProfile />} />
-          <Route path="savedServices" element={<SavedServices />} />
+          <Route path="savedServices" element={<SavedServices/>} />
           <Route path="myReviews" element={<MyReviews />} />
         </Route>
         <Route

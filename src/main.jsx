@@ -6,9 +6,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './Context/AuthContext.jsx';
 import { SearchProvider } from './Context/SearchContext.jsx';
 import { HospitalProvider } from './Context/HospitalContext.jsx';
-
+import { ServicesProvider } from "./Context/ServicesContext";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <ServicesProvider>
     <HospitalProvider>
     <AuthProvider>
       <SearchProvider>
@@ -18,5 +19,6 @@ createRoot(document.getElementById('root')).render(
       </SearchProvider>
     </AuthProvider>
     </HospitalProvider>
+    </ServicesProvider>
   </StrictMode>,
 )
