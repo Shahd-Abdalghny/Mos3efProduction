@@ -11,7 +11,7 @@ export const SearchProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_URL = "https://mos3ef-api.runasp.net/api/Services/search";
+  const API_URL = "http://mos3ef.runasp.net/api/Services/search";
 
   // search by keyword function
   const searchByKeyword = async (keyword, lat, lon) => {
@@ -50,7 +50,7 @@ export const SearchProvider = ({ children }) => {
       });
 
       setResults(res.data);
-       return res.data; 
+      return res.data;
     } catch (err) {
       setError("حدث خطأ أثناء البحث بالكاتيجوري");
       console.log(err);
@@ -83,7 +83,7 @@ export const SearchProvider = ({ children }) => {
       setLoading(false);
     }
   };
-const clearResults = () => setResults([]);
+  const clearResults = () => setResults([]);
 
   return (
     <SearchContext.Provider

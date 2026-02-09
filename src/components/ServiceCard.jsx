@@ -9,16 +9,11 @@ import {
   PhoneIcon,
   ScaleIcon,
   Share2Icon,
+  SendHorizontal,
 } from "lucide-react";
-import { useEffect, useState  } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./ui/carousel";
+
 import React from "react";
 import { ServicesContext } from "../Context/ServicesContext";
 import { Button } from "./ui/button";
@@ -28,9 +23,9 @@ import { ButtonTextAndIcon } from "./ButtonTextAndIcon";
 import { RatingOfServices } from "./RatingOfServices";
 import { HeartButton } from "./HeartButton";
 import { Online } from "./Online";
-import { ReviewCard } from "./ReviewCard";
 import { useHospital } from "../hooks/useHospital.js";
-
+import AddReview from "./AddReview";
+import  AllReview  from "./AllReview";
 const detailsSections = [
   {
     title: "التخصصات الرئيسية",
@@ -44,11 +39,26 @@ const detailsSections = [
   },
 ];
 
-const stars = Array(5).fill(
-  "https://c.animaapp.com/mi7g3z3l51WlVC/img/star-filled.svg"
-);
+
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  const R = 6371; // نصف قطر الأرض بالكيلومتر
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}
+
 
 export const ServiceCard = () => {
+
   const { id } = useParams();
   const { getServiceById } = useHospital();
   const [service, setService] = useState(null);
@@ -76,9 +86,34 @@ export const ServiceCard = () => {
 
     if (id) {
       fetchService();
-      
     }
   }, [id, getServiceById]);
+ useEffect(() => {
+   if (!service) return;
+
+   navigator.geolocation.getCurrentPosition(
+     (position) => {
+       const userLat = position.coords.latitude;
+       const userLon = position.coords.longitude;
+
+       const distance = getDistanceFromLatLonInKm(
+         userLat,
+         userLon,
+         service.hospitalLatitude,
+         service.hospitalLongitude,
+       );
+
+       
+       setService((prev) => ({
+         ...prev,
+         distanceKm: distance.toFixed(1), // تقريب لواحد عشري
+       }));
+     },
+     (error) => {
+       console.log("خطأ في الحصول على الموقع:", error);
+     },
+   );
+ }, [service]);
 
   if (loading) {
     return (
@@ -122,17 +157,17 @@ export const ServiceCard = () => {
               <img
                 src={
                   service.hospitalImage
-                    ? `https://mos3ef-api.runasp.net${service.hospitalImage}`
+                    ? `https://mos3ef.runasp.net${service.hospitalImage}`
                     : "https://media.istockphoto.com/id/1419877131/photo/building-facade-of-a-hospital-in-commercial-and-business-district-under-blue-sky.jpg?s=612x612&w=0&k=20&c=wGxVbFSxljSZb_t_qROE4RwsCgssKbGlqawAtmQ88Ls="
                 }
                 alt={service.name || "صورة الخدمة"}
                 className="w-full h-full object-cover"
               />
               <Online isOnline={true} />
-              
+
               <div className="flex flex-col w-full  items-end gap-1 absolute top-[80px] xs:top-[100px] sm:top-[120px] md:top-[150px] lg:top-[201px] right-[8px] xs:right-[10px] sm:right-[12px] md:right-[15px] lg:right-[18px]">
                 <div className="inline-flex items-center justify-center gap-1 xs:gap-2 sm:gap-3 md:gap-4 flex-wrap">
-                  <div className="w-fit text-[#152211] text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-Cairo font-bold tracking-[0] leading-[normal] [direction:rtl]">
+                  <div className="bg-Blue-200 rounded-full px-4 py-1 w-fit text-[#152211] text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-Cairo font-bold tracking-[0] leading-[normal] [direction:rtl]">
                     {service.name || "اسم الخدمة"}
                   </div>
                   <div className="w-[2px] xs:w-[3px] sm:w-[4px] md:w-[5px] h-[20px] xs:h-[25px] sm:h-[30px] md:h-[37px] font-Cairo font-bold text-[#e9f5fb] text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl text-right tracking-[0] leading-[normal] hidden xs:block">
@@ -141,7 +176,7 @@ export const ServiceCard = () => {
                   <div className="inline-flex items-center justify-center gap-1">
                     <div className="inline-flex flex-col items-center gap-1">
                       <RatingOfServices
-                        rating={service.averageRating || "4.5"}
+                        rating={service.averageRating || "0"}
                       />
                     </div>
                   </div>
@@ -153,7 +188,7 @@ export const ServiceCard = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row w-full px-2 items-center justify-between mt-3 md:mt-4 gap-2 md:gap-4">
+            <div className="flex flex-col sm:flex-row w-full px-6 items-center justify-between mt-3 md:mt-4 gap-2 md:gap-4">
               <div className="flex items-center justify-end gap-2 md:gap-4 flex-wrap">
                 <div className="inline-flex items-center justify-center gap-1">
                   <div className="w-fit font-Cairo font-normal text-Blue-900 text-xs md:text-sm lg:text-base tracking-[0] leading-[normal] [direction:rtl]">
@@ -167,14 +202,6 @@ export const ServiceCard = () => {
                   <MapPinIcon className="w-4 h-4 xs:w-5 xs:h-5 md:w-6 md:h-6" />
                 </div>
               </div>
-              <div className="inline-flex items-center justify-center gap-1 xs:gap-2 mt-1 xs:mt-2 flex-wrap">
-                <ButtonTextAndIcon
-                  text={"اضف للمقارنة"}
-                  icon={
-                    <ScaleIcon className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-                  }
-                  className="text-xs"
-                />
                 <ButtonTextAndIcon
                   text={"أتصل بالمستشفى"}
                   icon={
@@ -182,7 +209,6 @@ export const ServiceCard = () => {
                   }
                   className="text-xs"
                 />
-              </div>
             </div>
           </CardContent>
         </Card>
@@ -199,10 +225,10 @@ export const ServiceCard = () => {
                 <div className="flex flex-col w-full sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[463px] items-end gap-2 md:gap-4">
                   <Card className="inline-flex items-center justify-center gap-2 md:gap-3 p-2 md:p-3 bg-[#e9f5fb] rounded-[18px] md:rounded-[22px] border-0 shadow-none w-full">
                     <CardContent className="p-0 flex items-center w-full justify-center gap-2 md:gap-3">
-                      <div className="w-fit font-Cairo font-semibold text-black text-sm md:text-[15px] tracking-[0] leading-[normal] [direction:rtl]">
+                      <div className="w-fit font-Cairo  text-black text-sm md:text-[15px] tracking-[0] leading-[normal] [direction:rtl]">
                         {service.price || "0"}
                       </div>
-                      <div className="w-fit font-Cairo font-bold text-[#294521] text-lg md:text-xl lg:text-2xl xl:text-[28px] tracking-[0] leading-[normal] whitespace-nowrap [direction:rtl]">
+                      <div className="w-fit font-Cairo  text-[#294521] text-sm md:text-[15px]  tracking-[0] leading-[normal] whitespace-nowrap [direction:rtl]">
                         جنيها
                       </div>
                     </CardContent>
@@ -235,6 +261,7 @@ export const ServiceCard = () => {
                       service.availability === "YES" ||
                       service.availability === "متاح" ||
                       service.availability === "متاحة" ||
+                      service.availability === "نعم" ||
                       service.availability === true
                         ? "bg-green-100"
                         : "bg-red-100"
@@ -246,6 +273,7 @@ export const ServiceCard = () => {
                           service.availability === "YES" ||
                           service.availability === "متاح" ||
                           service.availability === "متاحة" ||
+                          service.availability === "نعم" ||
                           service.availability === true
                             ? "text-green-800"
                             : "text-red-800"
@@ -254,7 +282,9 @@ export const ServiceCard = () => {
                         {service.availability === "YES" ||
                         service.availability === "متاح" ||
                         service.availability === true ||
+                        service.availability === "نعم" ||
                         service.availability === "متاحة"
+
                           ? "متاحة"
                           : "غير متاحة"}
                       </div>
@@ -272,7 +302,7 @@ export const ServiceCard = () => {
                 alt={service.name || "صورة الخدمة"}
                 src={
                   service.hospitalImage
-                    ? `https://mos3ef-api.runasp.net${service.hospitalImage}`
+                    ? `https://mos3ef.runasp.net${service.hospitalImage}`
                     : "https://media.istockphoto.com/id/1419877131/photo/building-facade-of-a-hospital-in-commercial-and-business-district-under-blue-sky.jpg?s=612x612&w=0&k=20&c=wGxVbFSxljSZb_t_qROE4RwsCgssKbGlqawAtmQ88Ls="
                 }
               />
@@ -292,7 +322,7 @@ export const ServiceCard = () => {
               <div className="w-full lg:w-[577px] font-Cairo font-semibold text-black text-sm md:text-base lg:text-lg tracking-[0] leading-relaxed [direction:rtl]">
                 {service.description}
               </div>
-              <div className="w-full lg:w-[147px] text-black text-sm md:text-base lg:text-lg font-Cairo font-bold tracking-[0] leading-[normal] [direction:rtl] text-center lg:text-right">
+              <div className="w-full lg:w-36.75 text-black text-sm md:text-base lg:text-lg font-Cairo font-bold tracking-[0] leading-[normal] [direction:rtl] text-center lg:text-right">
                 الوصف
               </div>
             </div>
@@ -305,78 +335,20 @@ export const ServiceCard = () => {
                 <div className="w-full lg:w-[577px] font-Cairo font-semibold text-black text-sm md:text-base lg:text-lg tracking-[0] leading-relaxed [direction:rtl]">
                   {section.content}
                 </div>
-                <div className="w-full lg:w-[147px] text-black text-sm md:text-base lg:text-lg font-Cairo font-bold tracking-[0] leading-[normal] [direction:rtl] text-center lg:text-right">
+                <div className="w-full lg:w-36.75 text-black text-sm md:text-base lg:text-lg font-Cairo font-bold tracking-[0] leading-[normal] [direction:rtl] text-center lg:text-right">
                   {section.title}
                 </div>
               </div>
             ))}
           </div>
         </div>
-
         <hr className="text-gray-300 my-2 w-[90%]" />
-
         <h2 className="self-stretch font-Cairo font-bold text-black text-lg md:text-xl lg:text-2xl text-center tracking-[0] leading-[normal] [direction:rtl]">
           التقييمات والمراجعات
         </h2>
-
-        <div className="w-full px-3 md:px-4 lg:px-10">
-          <Carousel
-            opts={{
-              align: "start",
-            }}
-            className="w-full max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto"
-          >
-            <CarouselContent>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <CarouselItem
-                  key={index}
-                  className="basis-full xs:basis-1/2 sm:basis-1/2 lg:basis-1/3"
-                >
-                  <ReviewCard
-                    name={`مستخدم ${index + 1}`}
-                    describe={"تجربة رائعة، الخدمة كانت ممتازة"}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="hidden sm:flex" />
-            <CarouselNext className="hidden sm:flex" />
-          </Carousel>
-        </div>
-
-        <div className="flex flex-col w-full max-w-[280px] sm:max-w-[350px] md:max-w-[400px] lg:max-w-[447px] items-center gap-3 md:gap-4 lg:gap-[9px] px-3 md:px-4">
-          <div className="w-fit font-Cairo font-semibold text-black text-sm md:text-base lg:text-lg tracking-[0] leading-[normal] [direction:rtl]">
-            تحدث عن تجربتك
-          </div>
-
-          <div className="flex flex-col w-28 md:w-32 gap-1 p-1">
-            <div className="flex h-5 md:h-6 items-center justify-center w-full">
-              {stars.map((star, index) => (
-                <img
-                  key={index}
-                  className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
-                  alt="Star filled"
-                  src={star}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col w-full">
-            <div className="relative h-[130px] md:h-[150px] lg:h-[172px] bg-white rounded-[15px_15px_0px_15px] md:rounded-[20px_20px_0px_20px] overflow-hidden border border-solid border-[#cccccc]">
-              <Textarea
-                placeholder="أضف مراجعتك هنا..."
-                className="absolute top-2.5 right-[8px] md:right-[10px] lg:right-[19px] w-[calc(100%-16px)] md:w-[calc(100%-20px)] lg:w-[92%] h-[calc(100%-20px)] border-0 resize-none font-Cairo font-normal text-[#1a1a1a] text-xs md:text-sm lg:text-base [direction:rtl] focus-visible:ring-0"
-              />
-            </div>
-
-            <div className="flex items-center justify-center w-fit font-Cairo font-normal text-[#b3b3b3] text-xs text-center md:text-left [direction:rtl] mt-1 md:mt-2">
-              سوف تظهر مراجعتك لزوار مسعف
-            </div>
-          </div>
-        </div>
+        <AllReview serviceId={id}/>
+        <AddReview serviceId={id}/>
       </div>
     </div>
   );
 };
-

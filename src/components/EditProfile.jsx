@@ -191,7 +191,7 @@ const handleChangePassword = async () => {
               />
             </div>
             <div className="flex flex-col  items-end gap-2 w-full">
-              <div className="flex items-center gap-2 w-full [direction:rtl] ">
+              <div className="flex md:items-center flex-col md:flex-row gap-2 w-full [direction:rtl] ">
                 <div className={`flex flex-col gap-2 flex-1`}>
                   <Label className="flex items-center  gap-2 h-3.5 font-Cairo font-normal text-[#354152] text-sm [direction:rtl]">
                     كلمه المرور الحاليه

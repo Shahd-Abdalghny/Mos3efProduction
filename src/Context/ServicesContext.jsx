@@ -12,36 +12,34 @@ export const ServicesProvider = ({ children }) => {
   const [pageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [hasNextPage, setHasNextPage] = useState(false);
-  const baseUrl = "https://mos3ef-api.runasp.net/api/";
+  const baseUrl = "http://mos3ef.runasp.net/api/";
 
- const getMySaveServices = async (page = 1) => {
-   try {
-     const token = localStorage.getItem("authToken");
+  const getMySaveServices = async (page = 1) => {
+    try {
+      const token = localStorage.getItem("authToken");
 
-     const res = await axios.get(`${baseUrl}Patients/my-saved-services`, {
-       headers: {
-         Authorization: `Bearer ${token}`,
-       },
-       params: {
-         pageNumber: page,
-         pageSize: pageSize,
-       },
-     });
+      const res = await axios.get(`${baseUrl}Patients/my-saved-services`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          pageNumber: page,
+          pageSize: pageSize,
+        },
+      });
 
-     const data = res.data;
+      const data = res.data;
 
-     
-     setSavedServices((prev) =>
-       page === 1 ? data.items : [...prev, ...data.items],
-     );
-     setTotalPages(data.totalPages);
-     setHasNextPage(data.hasNextPage);
-     setPageNumber(data.pageNumber);
-   } catch (err) {
-     console.log("Error fetching services:", err);
-   }
- };
-
+      setSavedServices((prev) =>
+        page === 1 ? data.items : [...prev, ...data.items],
+      );
+      setTotalPages(data.totalPages);
+      setHasNextPage(data.hasNextPage);
+      setPageNumber(data.pageNumber);
+    } catch (err) {
+      console.log("Error fetching services:", err);
+    }
+  };
 
   const AddSavedServices = async (serviceId) => {
     try {
@@ -51,7 +49,7 @@ export const ServicesProvider = ({ children }) => {
       }
 
       const token = localStorage.getItem("authToken");
-      if(!token) {
+      if (!token) {
         alert("Please login first");
         return;
       }
@@ -77,10 +75,10 @@ export const ServicesProvider = ({ children }) => {
       }
 
       const token = localStorage.getItem("authToken");
-       if (!token) {
-         alert("Please login first");
-         return;
-       }
+      if (!token) {
+        alert("Please login first");
+        return;
+      }
       await axios.delete(`${baseUrl}Patients/my-saved-services/${serviceId}`, {
         headers: {
           Authorization: `Bearer ${token}`,

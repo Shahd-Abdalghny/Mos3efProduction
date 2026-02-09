@@ -1,3 +1,4 @@
+/** @format */
 
 import { createContext, useState } from "react";
 import axios from "axios";
@@ -9,7 +10,7 @@ export const HospitalProvider = ({ children }) => {
   const [services, setServices] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertType, setAlertType] = useState(null);
-  const baseUrl = "https://mos3ef-api.runasp.net/api/";
+  const baseUrl = "http://mos3ef.runasp.net/api/";
 
   const getAllServices = async () => {
     try {
@@ -19,15 +20,14 @@ export const HospitalProvider = ({ children }) => {
       const res = await axios.post(
         `${baseUrl}Hospital/GetAllServices`,
         {},
-        { headers }
+        { headers },
       );
 
-      const data =  res.data;
+      const data = res.data;
       setServices(data);
-       setAlertMsg("تم جلب الخدمات بنجاح");
-       setAlertType("success");
+      setAlertMsg("تم جلب الخدمات بنجاح");
+      setAlertType("success");
       return data;
-      
     } catch (err) {
       console.log("Error fetching services:", err);
       setAlertMsg("فشل في جلب الخدمات");
@@ -37,7 +37,6 @@ export const HospitalProvider = ({ children }) => {
   };
 
   const deleteHospitalService = async (serviceId) => {
-
     try {
       if (!serviceId) {
         console.error(" Service ID is missing!");
@@ -50,7 +49,7 @@ export const HospitalProvider = ({ children }) => {
         `${baseUrl}Hospital/DeleteService/${serviceId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       console.log("Delete response:", res.data);
 
@@ -67,7 +66,7 @@ export const HospitalProvider = ({ children }) => {
   const addHospitalService = async (serviceData) => {
     try {
       const token = localStorage.getItem("authToken");
-    
+
       const res = await axios.post(
         `${baseUrl}Hospital/AddService`,
         serviceData,
@@ -76,7 +75,7 @@ export const HospitalProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       setAlertMsg("تمت الإضافة بنجاح!");
@@ -90,9 +89,7 @@ export const HospitalProvider = ({ children }) => {
   };
 
   const updateHospitalService = async (serviceId, serviceData) => {
-   
     try {
-     
       const token = localStorage.getItem("authToken");
       const res = await axios.put(
         `${baseUrl}Hospital/UpdateService/${serviceId}`,
@@ -102,9 +99,8 @@ export const HospitalProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
-
 
       setAlertMsg("تم تحديث الخدمة بنجاح");
       setAlertType("success");

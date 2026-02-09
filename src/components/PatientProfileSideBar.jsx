@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { SideBarMobile } from "./SideBarMobile";
 import { PatientImage } from './PatientImage';
 import { useAuth } from '../hooks/useAuth.js';
+import { Link, useLocation } from "react-router-dom";
+
 const profileMenuItems = [
   {
     label: "تعديل الملف الشخصي",
@@ -31,7 +33,7 @@ const profileMenuItems = [
 export const PatientProfileSideBar = () => {
   const navigate = useNavigate();
   const {logout ,user} = useAuth();
-
+  const location = useLocation();
   return (
     <>
       <aside className="mt-[60px] lg:w-[30%] h-[472.8px] hidden lg:inline-flex items-center gap-1 p-1   animate-fade-in   [--animation-delay:400ms]">
@@ -56,7 +58,7 @@ export const PatientProfileSideBar = () => {
                   key={index}
                   variant="ghost"
                   className={`flex justify-end gap-1 px-8 py-2 w-full h-auto rounded-[20px] hover:bg-[#d3eaf8] transition-colors ${
-                    item.active ? "bg-[#d3eaf8]" : ""
+                    location.pathname === item.to ? "bg-[#d3eaf8]" : ""
                   }`}
                  onClick={() => {
   if (item.label === "تسجيل الخروج") {

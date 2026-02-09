@@ -26,7 +26,7 @@ const SavedServices = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="w-full px-3 md:px-4 lg:px-10 mt-6">
       <h2 className="text-2xl font-Cairo mb-4 [direction:rtl]">
         الخدمات المفضلة
       </h2>

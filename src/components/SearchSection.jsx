@@ -1,11 +1,9 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { SearchIcon, Map, FilterIcon } from "lucide-react";
+import { SearchIcon, Map } from "lucide-react";
 import { useSearch } from "../hooks/useSearch.js";
-import { useState } from "react";
 import { HospitalCard } from "./HospitalCard.jsx";
 import MapComponent from "./Map.jsx";
 
@@ -17,7 +15,7 @@ const filterTags = [
 ];
 
 export const SearchSection = () => {
-  const { results, searchByCategory, searchByKeyword, clearResults } =
+  const { results, searchByCategory, searchByKeyword, clearResults, loading } =
     useSearch();
   const [keyword, setKeyword] = useState("");
   const [showMap, setShowMap] = useState(false);
@@ -33,27 +31,24 @@ export const SearchSection = () => {
       (pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
-
         searchByKeyword(keyword, lat, lon);
       },
       () => {
         searchByKeyword(keyword);
-      }
+      },
     );
   };
 
   const handleCategorySearch = (cat) => {
-    console.log("Category clicked:", cat); // Debug log
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
-
         searchByCategory(cat, lat, lon);
       },
       () => {
         searchByCategory(cat);
-      }
+      },
     );
   };
 
@@ -82,7 +77,6 @@ export const SearchSection = () => {
 
       {/* Filter Tags */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-3 w-full [direction:rtl]">
-        {/* Map Button - فوق الفلاتر في الموبايل */}
         <Button
           onClick={() => setShowMap(!showMap)}
           className="inline-flex items-center justify-center w-full md:w-[84px] h-[53px] gap-1 px-6 py-2 bg-Blue rounded-3xl shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue/90 transition-colors order-1 md:order-2"
@@ -94,7 +88,6 @@ export const SearchSection = () => {
           </span>
         </Button>
 
-        {/* Filter Tags Container */}
         <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full order-2 md:order-1">
           {filterTags.map((tag) => (
             <button
@@ -113,30 +106,40 @@ export const SearchSection = () => {
       </div>
 
       {/* Results Section */}
-      {results.length > 0 && (
-        <div className="w-full">
-          {!showMap && (
-            <div className="mt-6 mb-4 w-full px-2 md:px-0">
-              <div className="py-4 md:py-6 border border-Blue-900 rounded-2xl bg-Blue-200 flex flex-col md:flex-row md:flex-wrap items-center gap-4 md:gap-6 justify-center overflow-x-auto md:overflow-visible">
-                {results.map((item, index) => (
-                  <div
-                    key={index}
-                    className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)] min-w-[280px] max-w-[400px]"
-                  >
-                    <HospitalCard item={item} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+      <div className="w-full">
+        {loading && (
+          <p className="text-center text-gray-500 [direction:rtl]">
+            جاري التحميل...
+          </p>
+        )}
 
-          {showMap && (
-            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] mb-10 rounded-lg overflow-hidden border border-Blue-900 mt-4">
-              <MapComponent results={results} />
+        { results.length === 0 && (
+          <p className="text-center text-gray-500 [direction:rtl]">
+            لا توجد نتائج للبحث.
+          </p>
+        )}
+
+        {!loading && results.length > 0 && !showMap && (
+          <div className="mt-6 mb-4 w-full px-2 md:px-0">
+            <div className="py-4 md:py-6 border border-Blue-900 rounded-2xl bg-Blue-200 flex flex-col md:flex-row md:flex-wrap items-center gap-4 md:gap-6 justify-center overflow-x-auto md:overflow-visible">
+              {results.map((item, index) => (
+                <div
+                  key={index}
+                  className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)] min-w-70 max-w-100 "
+                >
+                  <HospitalCard item={item} />
+                </div>
+              ))}
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+
+        {!loading && results.length > 0 && showMap && (
+          <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] mb-10 rounded-lg overflow-hidden border border-Blue-900 mt-4">
+            <MapComponent results={results} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

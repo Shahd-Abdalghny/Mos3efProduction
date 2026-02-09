@@ -7,8 +7,10 @@ import { AuthProvider } from './Context/AuthContext.jsx';
 import { SearchProvider } from './Context/SearchContext.jsx';
 import { HospitalProvider } from './Context/HospitalContext.jsx';
 import { ServicesProvider } from "./Context/ServicesContext";
+import { ReviewProvider } from "./Context/ReviewContext";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <ReviewProvider>
     <ServicesProvider>
     <HospitalProvider>
     <AuthProvider>
@@ -20,5 +22,6 @@ createRoot(document.getElementById('root')).render(
     </AuthProvider>
     </HospitalProvider>
     </ServicesProvider>
+    </ReviewProvider>
   </StrictMode>,
 )

@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import { MenuIcon, XIcon } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from '../hooks/useAuth.js';
 import { PatientImage } from './PatientImage';
 import { useNavigate } from 'react-router-dom';
 const navItems = [
-    { label: "الرئيسية", href: "/", active: true },
-    { label: "خدماتنا", href: "#services" },
+    { label: "الرئيسية", href: "/", isactive: true },
+    { label: "خدماتنا", href: "/our-service" },
     { label: "من نحن", href: "/about-us" },
 ];
 
@@ -15,6 +15,7 @@ export const NavBar = () => {
     const [showMobileMenue, setShowMobileMenue] = useState(false);
     const {user,logout ,role} = useAuth(); 
     const navigate = useNavigate();
+    const location = useLocation(); 
  const handelNavigate = () => {
   if(role==0)
     navigate("/PatientProfile")
@@ -39,11 +40,13 @@ export const NavBar = () => {
 
             {/* ----------Desktop Nav---------- */}
             <ul className="hidden md:flex items-center justify-center gap-6 px-12 py-3 bg-Blue-900 rounded-[84px]  [direction:rtl]">
-              {navItems.map((item, index) => (
+              {navItems.map((item, index) => {
+                const isActive = location.pathname === item.href;
+                return (
                 <li
                   key={index}
                   className={`inline-flex items-center justify-center gap-1 px-6 py-2 h-auto rounded-3xl overflow-hidden ${
-                    item.active ? "bg-Blue" : "bg-Blue-900"
+                    isActive ? "bg-Blue" : "bg-Blue-900"
                   } shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue transition-colors`}
                 >
                   <Link
@@ -53,7 +56,7 @@ export const NavBar = () => {
                     {item.label}
                   </Link>
                 </li>
-              ))}
+                )})}
             </ul>
 
             {/* ----------Desktop Buttons---------- */}
@@ -87,7 +90,7 @@ export const NavBar = () => {
                   onClick={handelNavigate}
                   className="inline-flex  w-10 h-10   rounded-full bg-Blue  hover:bg-Blue-900/10 transition-colors"
                 >
-                  <PatientImage Size="w-full h-full" />
+                  <PatientImage Size="w-full h-full"/>
                 </button>
               ) : (
                 <button className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">

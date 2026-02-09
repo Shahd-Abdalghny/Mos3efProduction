@@ -18,6 +18,7 @@ import MainLayout from "./layouts/MainLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
 import { ServiceCard } from "./components/ServiceCard";
 import { AboutUs } from "./Pages/AboutUs/AboutUs";
+import { OurService } from "./Pages/OurService/OurService";
 function App() {
   return (
     <>
@@ -68,6 +69,14 @@ function App() {
           element={
             <MainLayout>
               <AboutUs/>
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/our-service"
+          element={
+            <MainLayout>
+              <OurService/>
             </MainLayout>
           }
         />

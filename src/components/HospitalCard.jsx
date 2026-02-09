@@ -16,19 +16,18 @@ export const HospitalCard = ({ item }) => {
   };
   return (
     <Card
-      
-      className="inline-flex flex-col items-center justify-center gap-3 md:gap-4 pt-2 pb-3 px-2 bg-white rounded-[20px] shadow-[0_0_2px_0_rgba(0,0,0,0.95)] w-full cursor-pointer hover:shadow-md transition-shadow"
+      className="inline-flex flex-col items-center justify-center gap-3 md:gap-4 pt-2 pb-3 px-2 bg-white rounded-[20px] shadow-[0_0_2px_0_rgba(0,0,0,0.95)] w-full cursor-pointer hover:shadow-md transition-shadow "
       data-model-id="4:98"
     >
       <CardContent className="p-0 w-full space-y-3 md:space-y-4">
         <HeaderOfService
           image={
             item.hospitalImage
-              ? `https://mos3ef-api.runasp.net${item.hospitalImage}`
+              ? `https://mos3ef.runasp.net${item.hospitalImage}`
               : "https://media.istockphoto.com/id/1419877131/photo/building-facade-of-a-hospital-in-commercial-and-business-district-under-blue-sky.jpg?s=612x612&w=0&k=20&c=wGxVbFSxljSZb_t_qROE4RwsCgssKbGlqawAtmQ88Ls="
           }
           name={item.hospitalName}
-          rating="5.0"
+          rating= {item.averageRating || "0"}
           isOnline={
             item.availability == "available" ||
             item.availability == "متاح" ||
@@ -71,10 +70,9 @@ export const HospitalCard = ({ item }) => {
         </div>
 
         {/* Footer Buttons */}
-        <footer className="inline-flex items-center justify-between md:justify-center gap-1 md:gap-2 w-full px-1 md:px-0">
+        <footer className="flex items-center justify-around  gap-1 md:gap-2 w-full px-1 md:px-0">
           <ButtonTextAndIcon
             text={"تفاصيل"}
-            icon={<ChartLine className="w-4 h-4 md:w-5 md:h-5" />}
             className="text-xs md:text-sm"
             onClick={handleClick}
           />
@@ -83,13 +81,7 @@ export const HospitalCard = ({ item }) => {
             label="Call hospital"
             size="sm"
           />
-          <IconButton
-            IconName={
-              <MoreVerticalIcon className="w-4 h-4 md:w-5 md:h-5 text-white" />
-            }
-            label="More options"
-            size="sm"
-          />
+         
         </footer>
       </CardContent>
     </Card>
