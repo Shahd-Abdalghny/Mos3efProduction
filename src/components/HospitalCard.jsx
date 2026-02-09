@@ -16,7 +16,7 @@ export const HospitalCard = ({ item }) => {
   };
   return (
     <Card
-      className="inline-flex flex-col items-center justify-center gap-3 md:gap-4 pt-2 pb-3 px-2 bg-white rounded-[20px] shadow-[0_0_2px_0_rgba(0,0,0,0.95)] w-full cursor-pointer hover:shadow-md transition-shadow "
+      className="inline-flex  flex-col items-center justify-center gap-3 md:gap-4 pt-2 pb-3 px-2 bg-white rounded-[20px] shadow-[0_0_2px_0_rgba(0,0,0,0.95)] w-full cursor-pointer hover:shadow-md transition-shadow "
       data-model-id="4:98"
     >
       <CardContent className="p-0 w-full space-y-3 md:space-y-4">
@@ -40,12 +40,12 @@ export const HospitalCard = ({ item }) => {
         />
 
         {/* Badges Section */}
-        <div className="flex flex-wrap justify-end gap-2 md:gap-4 px-1 md:px-2 w-full items-center">
+        <div className="flex flex-col justify-start gap-2 px-1 md:px-2 w-full [direction:rtl]">
           <Badge
             variant="outline"
             className="inline-flex justify-center gap-1 items-center border-0 bg-transparent shadow-none px-2 py-1"
           >
-            <span className="font-Cairo font-normal text-Blue-900 text-[10px] md:text-xs tracking-[0] leading-[normal] [direction:rtl]">
+            <span className="font-Cairo font-normal text-Blue-900 text-sm tracking-[0] leading-[normal] [direction:rtl]">
               سعر الكشف {item.price} ج.م
             </span>
           </Badge>
@@ -53,7 +53,7 @@ export const HospitalCard = ({ item }) => {
             variant="outline"
             className="inline-flex justify-center gap-1 items-center border-0 bg-transparent shadow-none px-2 py-1"
           >
-            <span className="font-Cairo font-normal text-Blue-900 text-[10px] md:text-xs tracking-[0] leading-[normal] [direction:rtl]">
+            <span className="font-Cairo font-normal text-Blue-900 text-sm tracking-[0] leading-[normal] [direction:rtl]">
               تبعد {item.distanceKm?.toFixed(2)} كم
             </span>
             <MapPinPlusInside className="w-3 h-3 md:w-4 md:h-4" />
