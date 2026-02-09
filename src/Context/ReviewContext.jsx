@@ -15,7 +15,7 @@ export const ReviewProvider = ({ children }) => {
 
 
   const api = axios.create({
-    baseURL: "http://mos3ef.runasp.net/api/Review",
+    baseURL: "https://mos3ef.runasp.net/api/Review",
     headers: {
       "Content-Type": "application/json",
     },

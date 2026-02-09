@@ -12,7 +12,7 @@ export const ServicesProvider = ({ children }) => {
   const [pageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [hasNextPage, setHasNextPage] = useState(false);
-  const baseUrl = "http://mos3ef.runasp.net/api/";
+  const baseUrl = "https://mos3ef.runasp.net/api/";
 
   const getMySaveServices = async (page = 1) => {
     try {

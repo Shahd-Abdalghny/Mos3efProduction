@@ -11,7 +11,7 @@ export const SearchProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_URL = "http://mos3ef.runasp.net/api/Services/search";
+  const API_URL = "https://mos3ef.runasp.net/api/Services/search";
 
   // search by keyword function
   const searchByKeyword = async (keyword, lat, lon) => {

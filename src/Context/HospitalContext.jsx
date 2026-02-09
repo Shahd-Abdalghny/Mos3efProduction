@@ -10,7 +10,7 @@ export const HospitalProvider = ({ children }) => {
   const [services, setServices] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
   const [alertType, setAlertType] = useState(null);
-  const baseUrl = "http://mos3ef.runasp.net/api/";
+  const baseUrl = "https://mos3ef.runasp.net/api/";
 
   const getAllServices = async () => {
     try {

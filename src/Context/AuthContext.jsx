@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
 
-  const baseUrl = "http://mos3ef.runasp.net/api/";
+  const baseUrl = "https://mos3ef.runasp.net/api/";
   // ------------------------ Signup Function ------------------ //
   const signup = async (data) => {
     try {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
         ...profileRes.data,
         userId,
         imageUrl: profileRes.data.imageUrl
-          ? `http://mos3ef.runasp.net${profileRes.data.imageUrl}`
+          ? `https://mos3ef.runasp.net${profileRes.data.imageUrl}`
           : null,
       };
 
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
             ...res.data,
             userId: storedUserId,
             imageUrl: res.data.imageUrl
-              ? `http://mos3ef.runasp.net${res.data.imageUrl}`
+              ? `https://mos3ef.runasp.net${res.data.imageUrl}`
               : null,
           };
           setUser(userData);
@@ -138,7 +138,7 @@ export const AuthProvider = ({ children }) => {
       const userData = {
         ...res.data,
         imageUrl: res.data.imageUrl
-          ? `http://mos3ef.runasp.net${res.data.imageUrl}`
+          ? `https://mos3ef.runasp.net${res.data.imageUrl}`
           : null,
       };
       
@@ -181,7 +181,7 @@ export const AuthProvider = ({ children }) => {
       const userData = {
         ...res.data,
         profileImage: res.data.imageUrl
-          ? `http://mos3ef.runasp.net${res.data.imageUrl}`
+          ? `https://mos3ef.runasp.net${res.data.imageUrl}`
           : null,
       };
 
