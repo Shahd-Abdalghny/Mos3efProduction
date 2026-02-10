@@ -51,6 +51,7 @@ export const ServicesProvider = ({ children }) => {
       const token = localStorage.getItem("authToken");
       if (!token) {
         alert("Please login first");
+        setSavedServices([]);
         return;
       }
       const res = await axios.post(
@@ -85,7 +86,7 @@ export const ServicesProvider = ({ children }) => {
         },
       });
 
-      // تحديث الواجهة بعد الحذف
+      
       setSavedServices((prev) =>
         prev.filter((service) => service.serviceId !== serviceId),
       );
