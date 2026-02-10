@@ -184,7 +184,7 @@ export const AuthProvider = ({ children }) => {
           ? `https://mos3ef.runasp.net${res.data.imageUrl}`
           : null,
       };
-
+      console.log("Updated Hospital Profile:", userData);
       setUser(userData);
       return { success: true, updatedUser: userData };
     } catch (err) {
