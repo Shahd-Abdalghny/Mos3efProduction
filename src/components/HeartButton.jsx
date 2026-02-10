@@ -13,7 +13,12 @@ export const HeartButton = ({ serviceId }) => {
         const isSaved = savedServices.some((service) => service.serviceId === serviceId);
        
         const handelToggleSave = async () => {
-            console.log("id",serviceId)
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+              alert("لازم تسجل دخول الأول");
+              return;
+            }
         try {
             if (isSaved) {
                 await deleteSavedService(serviceId);
