@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { Pen, Trash2, Plus } from "lucide-react";
+import { Pen, Trash2, Plus, ArrowBigLeftDash } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useHospital } from "../hooks/useHospital";
 import ServiceModal from "./ServiceModal";
@@ -27,9 +27,7 @@ export const MainSectionAtDashBoard = () => {
     updateHospitalService,
     deleteHospitalService,
     getAllServices,
-    alertMsg,
-    alertType,
-    setAlertMsg,
+   
   } = useHospital();
 
   const { user } = useAuth();
@@ -143,24 +141,22 @@ export const MainSectionAtDashBoard = () => {
       console.log(" Attempting to delete service ID:", serviceId);
 
       await deleteHospitalService(serviceId);
-      console.log(" Delete successful, updating UI...");
+      // console.log(" Delete successful, updating UI...");
 
       setServices((prev) => {
         const newServices = prev.filter((service) => service.id !== serviceId);
-        console.log(" Services after delete:", newServices.length);
+        // console.log(" Services after delete:", newServices.length);
         return newServices;
       });
 
-      console.log(" Service deleted successfully");
+      // console.log(" Service deleted successfully");
     } catch (error) {
       console.error(" Error in handleDeleteService:", error);
     }
   };
 
   const handleSaveService = async (serviceData) => {
-    console.log(" handleSaveService called:");
-    console.log(" Editing service exists:", !!editingService);
-    console.log(" Service data to save:", serviceData);
+    
 
     if (!serviceData.name || !serviceData.name.trim()) {
       alert("الرجاء إدخال اسم الخدمة");
@@ -183,10 +179,10 @@ export const MainSectionAtDashBoard = () => {
         category: parseInt(serviceData.categoryId, 10) || 1,
       };
 
-      console.log(" API Data to send:", apiData);
+      
 
       if (editingService && editingService.id) {
-        console.log(" Updating service ID:", editingService.id);
+        
         const savedService = await updateHospitalService(
           editingService.id,
           apiData
@@ -194,14 +190,14 @@ export const MainSectionAtDashBoard = () => {
         console.log(" Service updated successfully:", savedService);
 
         await fetchServices();
-        setAlertMsg("تم تحديث الخدمة بنجاح");
+        // setAlertMsg("تم تحديث الخدمة بنجاح");
       } else {
         console.log(" Adding new service");
         const savedService = await addHospitalService(apiData);
         console.log(" Service added successfully:", savedService);
 
         await fetchServices();
-        setAlertMsg("تم إضافة الخدمة بنجاح");
+        // setAlertMsg("تم إضافة الخدمة بنجاح");
       }
 
       setShowModal(false);
@@ -218,20 +214,8 @@ export const MainSectionAtDashBoard = () => {
 
   return (
     <section className="flex flex-col flex-1 min-w-0">
-      {alertMsg && (
-        <div
-          className={`fixed top-5 right-5 px-4 py-3 rounded shadow-lg text-white z-50 
-            ${alertType === "success" ? "bg-green-600" : "bg-red-600"}`}
-        >
-          <span>{alertMsg}</span>
-          <button onClick={() => setAlertMsg(null)} className="ml-3 font-bold">
-            ×
-          </button>
-        </div>
-      )}
-
-      <header className="flex items-center justify-between gap-4 px-8 py-6 bg-white w-full min-h-20">
-        <h1 className="font-Cairo font-normal text-Blue-900 text-xl [direction:rtl]">
+      <header className="flex items-center justify-between gap-1 md:gap-4 px-8 py-6 bg-white w-full min-h-20">
+        <h1 className="font-Cairo font-normal text-Blue-900 text-sm md:text-xl [direction:rtl]">
           {user?.name}
         </h1>
 
@@ -240,10 +224,9 @@ export const MainSectionAtDashBoard = () => {
           className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
-          إضافة خدمة جديدة
+          <span className="hidden sm:inline">إضافة خدمة جديدة</span>
         </Button>
       </header>
-
       <div className="flex flex-col flex-1 w-full max-w-[863.2px] mx-auto gap-8 px-2 py-3 md:p-8 overflow-x-hidden">
         <Card className="w-full bg-white rounded-[14px] border-[0.8px] border-[#f2f4f6] shadow-[0px_1px_2px_-1px_#0000001a,0px_1px_3px_#0000001a] animate-fade-in [--animation-delay:400ms]">
           <CardContent className="p-0">
@@ -276,16 +259,16 @@ export const MainSectionAtDashBoard = () => {
                 <Table>
                   <TableHeader className="bg-gray-50">
                     <TableRow className="border-b-[0.8px] border-[#f2f4f6] hover:bg-transparent">
-                      <TableHead className="w-[120px] font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
+                      <TableHead className="w-30 font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
                         الإجراءات
                       </TableHead>
-                      <TableHead className="w-[100px] font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
+                      <TableHead className="w-30 font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
                         الحالة
                       </TableHead>
-                      <TableHead className="w-[120px] font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
+                      <TableHead className="w-30 font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
                         السعر
                       </TableHead>
-                      <TableHead className="w-[120px] font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
+                      <TableHead className="w-30 font-Cairo font-bold text-[#495565] text-sm leading-5 text-center [direction:rtl]">
                         الفئة
                       </TableHead>
                       <TableHead className="font-Cairo font-bold text-[#495565] text-sm leading-5 text-right [direction:rtl]">
@@ -411,6 +394,8 @@ export const MainSectionAtDashBoard = () => {
           onClose={() => setShowModal(false)}
         />
       )}
+
+     
     </section>
   );
 };

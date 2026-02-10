@@ -29,7 +29,7 @@ export const EditHospitalProfile = () => {
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(user?.profileImage || null);
+  const [imagePreview, setImagePreview] = useState(user?.imageUrl || null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -75,7 +75,8 @@ export const EditHospitalProfile = () => {
       latitude: user?.latitude || "",
       longitude: user?.longitude || "",
     });
-    setImagePreview(user?.profileImage || null);
+    setImagePreview(user?.imageUrl || null);
+     
   }, [user, reset]);
 const getLocation = () => {
   if (!navigator.geolocation) {
@@ -92,7 +93,7 @@ const getLocation = () => {
       setValue("longitude", lon);
 
       alert("تم تحديد الموقع بنجاح");
-      console.log("Lat:", lat, "Lon:", lon);
+      
     },
     (error) => {
       alert("فشل تحديد الموقع، تأكد من السماح للموقع.");
@@ -116,7 +117,7 @@ const getLocation = () => {
   const onSubmit = async (data) => {
     const formData = {
       ...data,
-      profileImage: selectedImage,
+      ProfilePicture: selectedImage,
     };
     const result = await updateHospitalProfile(formData);
 
@@ -145,7 +146,9 @@ const getLocation = () => {
           <div className="w-[140px] h-[140px] flex items-center justify-center rounded-full bg-Blue text-white relative">
             {imagePreview ? (
               <img
-                src={imagePreview}
+                src={
+                  imagePreview
+                }
                 alt="Profile"
                 className="w-full h-full rounded-full object-cover"
               />

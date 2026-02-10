@@ -12,6 +12,14 @@ export const ReviewProvider = ({ children }) => {
   const[editReview, setEditReview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+    const [pagination, setPagination] = useState({
+    totalCount: 0,
+    pageNumber: 1,
+    pageSize: 10,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  });
 
 
   const api = axios.create({
@@ -119,6 +127,40 @@ export const ReviewProvider = ({ children }) => {
       console.error(err);
     }
   };
+  const getMyHospitalReviews = async (pageNumber = 1, pageSize = 10) => {
+    try {
+      setLoading(true);
+      const token = getToken();
+      if (!token) throw new Error("Not authenticated");
+
+      // const config = { headers: { Authorization: `Bearer ${token}` } };
+      const response = await api.get("/hospitalReviews", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          pageNumber,
+          pageSize,
+        },
+      });
+      setMyReviews(response.data.reviews);
+       setPagination({
+         totalCount: response.data.totalCount,
+         pageNumber: response.data.pageNumber,
+         pageSize: response.data.pageSize,
+         totalPages: response.data.totalPages,
+         hasNextPage: response.data.hasNextPage,
+         hasPreviousPage: response.data.hasPreviousPage,
+       });
+      setLoading(false);
+      console.log("My Reviews:", response.data.reviews); 
+      return response.data.reviews;
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+      console.error(err);
+    }
+  };
 
   return (
     <ReviewContext.Provider
@@ -134,6 +176,9 @@ export const ReviewProvider = ({ children }) => {
         getMyReviews,
         setEditReview,
         editReview,
+        getMyHospitalReviews ,
+        pagination,
+        setPagination,
       }}
     >
       {children}

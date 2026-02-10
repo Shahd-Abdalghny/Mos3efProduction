@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import {useAuth} from '../hooks/useAuth.js'
+import { useLocation } from "react-router-dom";
 const navigationItems = [
   {
     label: "لوحة التحكم",
@@ -28,6 +29,7 @@ const navigationItems = [
 export const SideBarDashBoard = () => {
  const navigate = useNavigate();
  const { logout } = useAuth(); 
+  const location = useLocation();
   return (
     <>
       <aside className="md:flex flex-col items-center hidden max-w-72  bg-[#1a2b45] min-h-screen  animate-fade-in [--animation-delay:0ms]">
@@ -46,7 +48,7 @@ export const SideBarDashBoard = () => {
               key={index}
               variant="ghost"
               className={`w-full h-auto flex items-center justify-end gap-1 px-8 py-2 rounded-[20px] transition-colors hover:bg-[#d3eaf8]/10 ${
-                item.active
+                location.pathname === item.to
                   ? "bg-[#d3eaf8] text-Blue-900 hover:bg-[#d3eaf8]"
                   : "bg-transparent text-[#e9f5fb]"
               }`}
@@ -100,7 +102,7 @@ export const SideBarDashBoard = () => {
               key={index}
               variant="ghost"
               className={`w-full h-auto flex items-center justify-center gap-1 px-3 py-1 rounded-[20px] transition-colors hover:bg-[#d3eaf8]/10 ${
-                item.active
+                location.pathname === item.to
                   ? "bg-[#d3eaf8] text-Blue-900 hover:bg-[#d3eaf8]"
                   : "bg-transparent text-[#e9f5fb]"
               }`}

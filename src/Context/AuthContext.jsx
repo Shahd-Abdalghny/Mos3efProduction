@@ -165,7 +165,7 @@ export const AuthProvider = ({ children }) => {
       fd.append("region", data.region);
       fd.append("latitude", data.latitude);
       fd.append("longitude", data.longitude);
-      if (data.profileImage) fd.append("profileImage", data.profileImage);
+      if (data.ProfilePicture) fd.append("ProfilePicture", data.ProfilePicture);
 
       await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
         headers: {
@@ -180,7 +180,7 @@ export const AuthProvider = ({ children }) => {
 
       const userData = {
         ...res.data,
-        profileImage: res.data.imageUrl
+        imageUrl: res.data.imageUrl
           ? `https://mos3ef.runasp.net${res.data.imageUrl}`
           : null,
       };
@@ -196,7 +196,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ---------------------------------------------------
+  // ------------------------ Change Password Function ------------------ //
   const changePassword = async (passwordData) => {
     try {
       const token = localStorage.getItem("authToken");

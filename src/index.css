@@ -5,8 +5,7 @@
 @import "tw-animate-css";
 * {
   box-sizing: border-box;
-  /* margin: 0;
-  padding: 0; */
+  /* outline: red 1px solid; */
 }
 body{
   font-family: "Cairo",sans-serif;

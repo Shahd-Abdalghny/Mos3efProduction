@@ -19,6 +19,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import { ServiceCard } from "./components/ServiceCard";
 import { AboutUs } from "./Pages/AboutUs/AboutUs";
 import { OurService } from "./Pages/OurService/OurService";
+import  MyHospitalReviews  from "./Pages/Hospital/MyHospitalReviews";
 function App() {
   return (
     <>
@@ -68,7 +69,7 @@ function App() {
           path="/about-us"
           element={
             <MainLayout>
-              <AboutUs/>
+              <AboutUs />
             </MainLayout>
           }
         />
@@ -76,7 +77,7 @@ function App() {
           path="/our-service"
           element={
             <MainLayout>
-              <OurService/>
+              <OurService />
             </MainLayout>
           }
         />
@@ -89,7 +90,7 @@ function App() {
           }
         >
           <Route index element={<EditProfile />} />
-          <Route path="savedServices" element={<SavedServices/>} />
+          <Route path="savedServices" element={<SavedServices />} />
           <Route path="myReviews" element={<MyReviews />} />
         </Route>
         <Route
@@ -102,7 +103,7 @@ function App() {
         >
           <Route index element={<MainSectionAtDashBoard />} />
           <Route path="update-profile" element={<EditHospitalProfile />} />
-          <Route path="reviews" element={<MyReviews />} />
+          <Route path="reviews" element={<MyHospitalReviews />} />
         </Route>
       </Routes>
     </>
