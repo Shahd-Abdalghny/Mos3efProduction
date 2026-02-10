@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
   const signup = async (data) => {
     try {
       const res = await axios.post(`${baseUrl}Account/register/patient`, data);
-      console.log(res.data);
-      return { success: true };
+
+      return { success: true , data: res.data};
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     }
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
       };
 
       setUser(userData);
-      console.log("Logged in user:", userData);
+      
 
       return { success: true };
     } catch (error) {
@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       return { success: true, updatedUser: userData };
     } catch (err) {
-      console.log("Update profile failed:", err);
+      
       return {
         success: false,
         message: err.response?.data?.message || "حدث خطأ",
@@ -165,8 +165,7 @@ export const AuthProvider = ({ children }) => {
       fd.append("region", data.region);
       fd.append("latitude", data.latitude);
       fd.append("longitude", data.longitude);
-      if (data.ProfilePicture) fd.append("ProfilePicture", data.ProfilePicture);
-
+      if (data.ProfileImage) fd.append("ProfileImage", data.ProfileImage);
       await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -184,11 +183,11 @@ export const AuthProvider = ({ children }) => {
           ? `https://mos3ef.runasp.net${res.data.imageUrl}`
           : null,
       };
-      console.log("Updated Hospital Profile:", userData);
+    
       setUser(userData);
       return { success: true, updatedUser: userData };
     } catch (err) {
-      console.log("Update profile failed:", err);
+      
       return {
         success: false,
         message: err.response?.data?.message || "حدث خطأ",
@@ -227,7 +226,7 @@ export const AuthProvider = ({ children }) => {
         `${baseUrl}Account/register/hospital`,
         data,
       );
-      console.log(response.data);
+      
       return { success: true, data: response.data };
     } catch (error) {
       return {

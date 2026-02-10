@@ -76,7 +76,7 @@ export const EditHospitalProfile = () => {
       longitude: user?.longitude || "",
     });
     setImagePreview(user?.imageUrl || null);
-     
+   
   }, [user, reset]);
 const getLocation = () => {
   if (!navigator.geolocation) {
@@ -117,7 +117,7 @@ const getLocation = () => {
   const onSubmit = async (data) => {
     const formData = {
       ...data,
-      ProfilePicture: selectedImage,
+      ProfileImage: selectedImage,
     };
     const result = await updateHospitalProfile(formData);
 
@@ -129,7 +129,6 @@ const getLocation = () => {
       alert(result.message);
     }
   };
-
   return (
     <Card className="flex w-[95%] md:w-[80%] items-center justify-center my-2.5 mx-auto bg-white rounded-[20px] shadow-[0px_2px_4px_-2px_#0000001a,0px_4px_6px_-1px_#0000001a] border-0 animate-fade-in [--animation-delay:200ms] ">
       <CardContent className="flex flex-col items-center gap-7 px-4 md:px-8 py-6 w-full">
